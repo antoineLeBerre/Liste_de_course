@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:liste_de_course/UI/Home/Layout/liste_layout.dart';
+import 'package:liste_de_course/UI/Home/widget/liste_widget.dart';
+import 'package:liste_de_course/UI/Home/widget/popin_widget.dart';
 import 'package:liste_de_course/constants/colorConstant.dart';
 
 class HomePage extends StatefulWidget {
@@ -11,8 +12,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<String> _liste = ['Liste 1', 'Liste 2', 'Liste 3', 'Liste 4'];
-  final test = List<String>.generate(1000, (i) => "Item $i");
+  List<String> _liste = [];
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +31,11 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 10.0),
             child: IconButton(
               onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text("Add Message"),
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) => PopinWidget(
+                    title: 'Ajouter une liste',
+                    label: 'Nom de la liste',
                   ),
                 );
               },
