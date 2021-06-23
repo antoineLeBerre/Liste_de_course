@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class ListeLayout extends StatelessWidget {
+class ListeWidget extends StatelessWidget {
   final String title;
   final String index;
 
-  ListeLayout({required this.title, required this.index});
+  ListeWidget({required this.title, required this.index});
 
   @override
   Widget build(BuildContext context) {

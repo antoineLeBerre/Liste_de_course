@@ -4,13 +4,20 @@ import 'package:liste_de_course/constants/colorConstant.dart';
 
 class PopinWidget extends StatelessWidget {
   final String title;
-  final String label;
+  final String hintText;
+  final Function addOrEdit;
+  final String okButton;
 
-  const PopinWidget({Key? key, required this.title, required this.label})
-      : super(key: key);
+  const PopinWidget(
+      {required this.title,
+      required this.hintText,
+      required this.addOrEdit,
+      required this.okButton});
 
   @override
   Widget build(BuildContext context) {
+    String? _value;
+
     return AlertDialog(
       title: Text(
         this.title,
@@ -24,13 +31,17 @@ class PopinWidget extends StatelessWidget {
         children: <Widget>[
           TextField(
             decoration: InputDecoration(
-              hintText: label,
+              hintText: hintText,
               focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: kAzur),
               ),
             ),
             autofocus: true,
+            autocorrect: false,
             cursorColor: kAzur,
+            onChanged: (text) {
+              _value = text;
+            },
           ),
         ],
       ),
@@ -43,9 +54,12 @@ class PopinWidget extends StatelessWidget {
         ),
         TextButton(
           onPressed: () {
+            if (_value != null) {
+              this.addOrEdit(_value!.trim());
+            }
             Navigator.of(context).pop();
           },
-          child: Text('OK'),
+          child: Text(okButton),
         ),
       ],
     );

@@ -14,6 +14,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   List<String> _liste = [];
 
+  void add(String test) {
+    _liste.add(test);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,9 +39,11 @@ class _HomePageState extends State<HomePage> {
                   context: context,
                   builder: (BuildContext context) => PopinWidget(
                     title: 'Ajouter une liste',
-                    label: 'Nom de la liste',
+                    hintText: 'Nom de la liste',
+                    addOrEdit: add,
+                    okButton: 'Ajouter',
                   ),
-                );
+                ).then((_) => setState(() {}));
               },
               icon: Icon(
                 Icons.add,
@@ -56,7 +62,7 @@ class _HomePageState extends State<HomePage> {
             child: ListView.builder(
               itemCount: _liste.length,
               itemBuilder: (context, index) {
-                return ListeLayout(
+                return ListeWidget(
                   title: '${_liste[index]}',
                   index: '${index + 1}',
                 );
