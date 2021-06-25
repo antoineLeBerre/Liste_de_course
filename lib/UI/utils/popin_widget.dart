@@ -7,12 +7,14 @@ class PopinWidget extends StatelessWidget {
   final String hintText;
   final Function addOrEdit;
   final String okButton;
+  final String listeTitle;
 
   const PopinWidget(
       {required this.title,
       required this.hintText,
       required this.addOrEdit,
-      required this.okButton});
+      required this.okButton,
+      this.listeTitle = ''});
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +32,7 @@ class PopinWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           TextField(
+            controller: TextEditingController(text: listeTitle),
             decoration: InputDecoration(
               hintText: hintText,
               focusedBorder: UnderlineInputBorder(
@@ -54,7 +57,7 @@ class PopinWidget extends StatelessWidget {
         ),
         TextButton(
           onPressed: () {
-            if (_value != null) {
+            if (_value != null && _value!.isNotEmpty) {
               this.addOrEdit(_value!.trim());
             }
             Navigator.of(context).pop();
