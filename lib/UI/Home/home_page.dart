@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:liste_de_course/Logic/services/UtilsService.dart';
 import 'package:liste_de_course/UI/Home/widget/liste_widget.dart';
-import 'package:liste_de_course/UI/Home/widget/popin_widget.dart';
 import 'package:liste_de_course/constants/colorConstant.dart';
 
 class HomePage extends StatefulWidget {
@@ -13,9 +13,15 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<String> _liste = [];
+  UtilsService utilsService = UtilsService();
 
-  void add(String test) {
-    _liste.add(test);
+  void add(String titre) {
+    _liste.add(titre);
+  }
+
+  void edit(String titre, int index) {
+    _liste[index] = titre;
+    setState(() {});
   }
 
   @override
@@ -35,15 +41,14 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 10.0),
             child: IconButton(
               onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) => PopinWidget(
-                    title: 'Ajouter une liste',
-                    hintText: 'Nom de la liste',
-                    addOrEdit: add,
-                    okButton: 'Ajouter',
-                  ),
-                ).then((_) => setState(() {}));
+                utilsService
+                    .createAlertDialog(
+                        context: context,
+                        titre: 'Ajouter une liste',
+                        hintText: 'Nom de la liste',
+                        dialogFunction: add,
+                        okButton: 'Ajouter')
+                    .then((_) => setState(() {}));
               },
               icon: Icon(
                 Icons.add,
@@ -64,7 +69,9 @@ class _HomePageState extends State<HomePage> {
               itemBuilder: (context, index) {
                 return ListeWidget(
                   title: '${_liste[index]}',
-                  index: '${index + 1}',
+                  index: index,
+                  editFunction: edit,
+                  deleteFunction: add,
                 );
               },
             ),

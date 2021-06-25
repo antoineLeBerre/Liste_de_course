@@ -1,17 +1,29 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:liste_de_course/Logic/services/UtilsService.dart';
 
 class ListeWidget extends StatelessWidget {
   final String title;
-  final String index;
+  final int index;
+  final Function editFunction;
+  final Function deleteFunction;
+  final UtilsService _utilsService = UtilsService();
 
-  ListeWidget({required this.title, required this.index});
+  void edit(String text) {
+    this.editFunction(text, this.index);
+  }
+
+  ListeWidget(
+      {required this.title,
+      required this.index,
+      required this.editFunction,
+      required this.deleteFunction});
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
       leading: Text(
-        this.index,
+        (this.index + 1).toString(),
         style: TextStyle(
           fontSize: 30.0,
         ),
@@ -39,11 +51,13 @@ class ListeWidget extends StatelessWidget {
               size: 30.0,
             ),
             onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text("Edit Message"),
-                ),
-              );
+              _utilsService.createAlertDialog(
+                  context: context,
+                  titre: 'Modifier la liste',
+                  hintText: 'Nom de la liste',
+                  dialogFunction: edit,
+                  okButton: 'Modifier',
+                  listeTitle: this.title);
             },
           ),
           IconButton(
