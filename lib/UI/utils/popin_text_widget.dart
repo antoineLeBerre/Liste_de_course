@@ -2,24 +2,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:liste_de_course/constants/colorConstant.dart';
 
-class PopinWidget extends StatelessWidget {
+class PopinTextWidget extends StatelessWidget {
   final String title;
-  final String hintText;
-  final Function addOrEdit;
+  final String texte;
+  final Function okFunction;
   final String okButton;
-  final String listeTitle;
 
-  const PopinWidget(
+  const PopinTextWidget(
       {required this.title,
-      required this.hintText,
-      required this.addOrEdit,
-      required this.okButton,
-      this.listeTitle = ''});
+      required this.texte,
+      required this.okFunction,
+      required this.okButton});
 
   @override
   Widget build(BuildContext context) {
-    String? _value;
-
     return AlertDialog(
       title: Text(
         this.title,
@@ -31,21 +27,7 @@ class PopinWidget extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          TextField(
-            controller: TextEditingController(text: listeTitle),
-            decoration: InputDecoration(
-              hintText: hintText,
-              focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: kAzur),
-              ),
-            ),
-            autofocus: true,
-            autocorrect: false,
-            cursorColor: kAzur,
-            onChanged: (text) {
-              _value = text;
-            },
-          ),
+          Text(texte),
         ],
       ),
       actions: <Widget>[
@@ -57,9 +39,7 @@ class PopinWidget extends StatelessWidget {
         ),
         TextButton(
           onPressed: () {
-            if (_value != null && _value!.isNotEmpty) {
-              this.addOrEdit(_value!.trim());
-            }
+            this.okFunction();
             Navigator.of(context).pop();
           },
           child: Text(okButton),
