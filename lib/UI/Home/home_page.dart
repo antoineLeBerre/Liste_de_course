@@ -24,6 +24,12 @@ class _HomePageState extends State<HomePage> {
     setState(() {});
   }
 
+  void delete(int index) {
+    String liste = _liste[index];
+    _liste.remove(liste);
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +48,7 @@ class _HomePageState extends State<HomePage> {
             child: IconButton(
               onPressed: () {
                 utilsService
-                    .createAlertDialog(
+                    .showInputDialog(
                         context: context,
                         titre: 'Ajouter une liste',
                         hintText: 'Nom de la liste',
@@ -71,7 +77,7 @@ class _HomePageState extends State<HomePage> {
                   title: '${_liste[index]}',
                   index: index,
                   editFunction: edit,
-                  deleteFunction: add,
+                  deleteFunction: delete,
                 );
               },
             ),

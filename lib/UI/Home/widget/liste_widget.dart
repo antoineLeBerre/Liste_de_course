@@ -13,6 +13,10 @@ class ListeWidget extends StatelessWidget {
     this.editFunction(text, this.index);
   }
 
+  void delete() {
+    this.deleteFunction(this.index);
+  }
+
   ListeWidget(
       {required this.title,
       required this.index,
@@ -51,7 +55,7 @@ class ListeWidget extends StatelessWidget {
               size: 30.0,
             ),
             onPressed: () {
-              _utilsService.createAlertDialog(
+              _utilsService.showInputDialog(
                   context: context,
                   titre: 'Modifier la liste',
                   hintText: 'Nom de la liste',
@@ -67,10 +71,12 @@ class ListeWidget extends StatelessWidget {
               size: 30.0,
             ),
             onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text("Delete Message"),
-                ),
+              _utilsService.showTextDialog(
+                context: context,
+                titre: 'Supprimer la liste',
+                texte: 'Supprimer la liste : ${this.title}',
+                dialogFunction: delete,
+                okButton: 'Supprimer',
               );
             },
           ),
