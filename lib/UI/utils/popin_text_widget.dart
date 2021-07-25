@@ -1,21 +1,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:liste_de_course/constants/colorConstant.dart';
+import 'package:liste_de_course/data/db/moor_database.dart';
+import 'package:provider/provider.dart';
 
 class PopinTextWidget extends StatelessWidget {
   final String title;
   final String texte;
-  final Function okFunction;
   final String okButton;
+  final dynamic elementToDelete;
 
   const PopinTextWidget(
       {required this.title,
       required this.texte,
-      required this.okFunction,
-      required this.okButton});
+      required this.okButton,
+      required this.elementToDelete});
 
   @override
   Widget build(BuildContext context) {
+    final database = Provider.of<AppDatabase>(context);
     return AlertDialog(
       title: Text(
         this.title,
@@ -39,7 +42,7 @@ class PopinTextWidget extends StatelessWidget {
         ),
         TextButton(
           onPressed: () {
-            this.okFunction();
+            database.deleteListe(elementToDelete);
             Navigator.of(context).pop();
           },
           child: Text(okButton),
