@@ -1,23 +1,25 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:liste_de_course/constants/colorConstant.dart';
+import 'package:liste_de_course/data/db/moor_database.dart';
+import 'package:moor_flutter/moor_flutter.dart' as moor;
+import 'package:provider/provider.dart';
 
 class PopinInputWidget extends StatelessWidget {
   final String title;
   final String hintText;
-  final Function addOrEdit;
   final String okButton;
-  final String listeTitle;
+  final Liste? elementToUpdate;
 
   const PopinInputWidget(
       {required this.title,
       required this.hintText,
-      required this.addOrEdit,
       required this.okButton,
-      this.listeTitle = ''});
+      this.elementToUpdate});
 
   @override
   Widget build(BuildContext context) {
+    final database = Provider.of<AppDatabase>(context);
     String? _value;
 
     return AlertDialog(
@@ -32,7 +34,7 @@ class PopinInputWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           TextField(
-            controller: TextEditingController(text: listeTitle),
+            controller: TextEditingController(text: elementToUpdate?.title),
             decoration: InputDecoration(
               hintText: hintText,
               focusedBorder: UnderlineInputBorder(
@@ -58,7 +60,12 @@ class PopinInputWidget extends StatelessWidget {
         TextButton(
           onPressed: () {
             if (_value != null && _value!.isNotEmpty) {
-              this.addOrEdit(_value!.trim());
+              if (elementToUpdate == null) {
+                database
+                    .insertListe(ListesCompanion(title: moor.Value(_value!)));
+              } else {
+                database.updateListe(elementToUpdate!.copyWith(title: _value));
+              }
             }
             Navigator.of(context).pop();
           },
