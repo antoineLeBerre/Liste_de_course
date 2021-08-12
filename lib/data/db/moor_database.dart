@@ -1,3 +1,5 @@
+import 'package:liste_de_course/data/dao/ElementDao.dart';
+import 'package:liste_de_course/data/dao/ListeDao.dart';
 import 'package:moor/moor.dart';
 import 'package:moor_flutter/moor_flutter.dart';
 
@@ -10,7 +12,15 @@ class Listes extends Table {
   TextColumn get title => text().withLength(min: 1, max: 50)();
 }
 
-@UseMoor(tables: [Listes])
+class Elements extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  IntColumn get idListe => integer()();
+
+  TextColumn get title => text().withLength(min: 1, max: 50)();
+  BoolColumn get checked => boolean().withDefault(Constant(false))();
+}
+
+@UseMoor(tables: [Listes, Elements], daos: [ListeDao, ElementDao])
 class AppDatabase extends _$AppDatabase {
   AppDatabase()
       // Specify the location of the database file
@@ -21,16 +31,4 @@ class AppDatabase extends _$AppDatabase {
 
   @override
   int get schemaVersion => 1;
-
-  Future<List<Liste>> getAllListe() => select(listes).get();
-
-  // Moor supports Streams which emit elements when the watched data changes
-  Stream<List<Liste>> watchAllListe() => select(listes).watch();
-
-  Future insertListe(ListesCompanion liste) => into(listes).insert(liste);
-
-  // Updates a Task with a matching primary key
-  Future updateListe(Liste liste) => update(listes).replace(liste);
-
-  Future deleteListe(Liste liste) => delete(listes).delete(liste);
 }

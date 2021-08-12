@@ -11,7 +11,7 @@ class ListeDeCourse extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Provider(
-      create: (_) => AppDatabase(),
+      create: (_) => AppDatabase().listeDao,
       child: MaterialApp(
         home: HomePage(),
         theme: ThemeData(fontFamily: 'Quicksand'),

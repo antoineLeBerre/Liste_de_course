@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:liste_de_course/constants/colorConstant.dart';
+import 'package:liste_de_course/data/dao/ListeDao.dart';
 import 'package:liste_de_course/data/db/moor_database.dart';
 import 'package:moor_flutter/moor_flutter.dart' as moor;
 import 'package:provider/provider.dart';
@@ -19,7 +20,7 @@ class PopinInputWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final database = Provider.of<AppDatabase>(context);
+    final dao = Provider.of<ListeDao>(context);
     String? _value;
 
     return AlertDialog(
@@ -61,10 +62,9 @@ class PopinInputWidget extends StatelessWidget {
           onPressed: () {
             if (_value != null && _value!.isNotEmpty) {
               if (elementToUpdate == null) {
-                database
-                    .insertListe(ListesCompanion(title: moor.Value(_value!)));
+                dao.insertListe(ListesCompanion(title: moor.Value(_value!)));
               } else {
-                database.updateListe(elementToUpdate!.copyWith(title: _value));
+                dao.updateListe(elementToUpdate!.copyWith(title: _value));
               }
             }
             Navigator.of(context).pop();

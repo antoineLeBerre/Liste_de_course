@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:liste_de_course/UI/utils/popin_input_widget.dart';
 import 'package:liste_de_course/UI/utils/popin_text_widget.dart';
+import 'package:liste_de_course/data/dao/ListeDao.dart';
 import 'package:liste_de_course/data/db/moor_database.dart';
 import 'package:liste_de_course/constants/colorConstant.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +17,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    final database = Provider.of<AppDatabase>(context);
+    final dao = Provider.of<ListeDao>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -55,7 +56,7 @@ class _HomePageState extends State<HomePage> {
       body: Column(
         children: [
           Flexible(
-            child: _buildTaskList(context, database),
+            child: _buildTaskList(context, dao),
           ),
         ],
       ),
@@ -63,9 +64,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   StreamBuilder<List<Liste>> _buildTaskList(
-      BuildContext context, AppDatabase database) {
+      BuildContext context, ListeDao dao) {
     return StreamBuilder(
-      stream: database.watchAllListe(),
+      stream: dao.watchAllListe(),
       builder: (context, AsyncSnapshot<List<Liste>> snapshot) {
         final listes = snapshot.data ?? [];
 
@@ -73,14 +74,14 @@ class _HomePageState extends State<HomePage> {
           itemCount: listes.length,
           itemBuilder: (_, index) {
             final itemListe = listes[index];
-            return _buildListItem(itemListe, database, index);
+            return _buildListItem(itemListe, index);
           },
         );
       },
     );
   }
 
-  Widget _buildListItem(Liste itemListe, AppDatabase database, int index) {
+  Widget _buildListItem(Liste itemListe, int index) {
     return ListTile(
       leading: Text(
         (index + 1).toString(),

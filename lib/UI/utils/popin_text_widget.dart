@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:liste_de_course/constants/colorConstant.dart';
-import 'package:liste_de_course/data/db/moor_database.dart';
+import 'package:liste_de_course/data/dao/ListeDao.dart';
 import 'package:provider/provider.dart';
 
 class PopinTextWidget extends StatelessWidget {
@@ -18,7 +18,7 @@ class PopinTextWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final database = Provider.of<AppDatabase>(context);
+    final dao = Provider.of<ListeDao>(context);
     return AlertDialog(
       title: Text(
         this.title,
@@ -42,7 +42,7 @@ class PopinTextWidget extends StatelessWidget {
         ),
         TextButton(
           onPressed: () {
-            database.deleteListe(elementToDelete);
+            dao.deleteListe(elementToDelete);
             Navigator.of(context).pop();
           },
           child: Text(okButton),
