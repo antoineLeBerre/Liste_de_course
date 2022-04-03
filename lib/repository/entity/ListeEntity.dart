@@ -8,7 +8,7 @@ class ListeEntity {
   ListeEntity({this.id, required this.title, required this.elements});
   ListeEntity.withoutElement({this.id, required this.title});
 
-  ListeEntity fromDb(Liste liste) {
+  factory ListeEntity.fromDb(Liste liste) {
     return ListeEntity(title: liste.title, id: liste.id, elements: []);
   }
 }
